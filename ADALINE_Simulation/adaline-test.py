@@ -97,7 +97,13 @@ class Perceptron:
         else:
             return 0
             
-            # test
+    def generate_2d_linear_function(self,w,b):
+      # pisahkan w
+      w1 = w[0]
+      w2 = w[1]
+      y = (-(b / w2) / (b / w1))x + (-b / w2)
+      function = "y = {}x + {}".format((-(b/w2) / (b/w1)), b)
+      return function
 
     def train_perceptron(self):
         epoch = 1
@@ -129,6 +135,7 @@ class Perceptron:
                 print("e = {}".format(e))
                 print("E = {}".format(E))
                 print("alph = {:2f}".format(alph))
+                print(generate_2d_linear_function)
                 input("continue? >> ")
                 mean.append(E)
             if epoch == 500:
