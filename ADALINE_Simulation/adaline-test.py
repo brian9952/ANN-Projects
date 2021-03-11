@@ -103,6 +103,7 @@ class Perceptron:
         b = self.b
         alph = self.alph
         is_classified = []
+        mean = []
         result = []
         print(alph)
         while True:
@@ -112,25 +113,30 @@ class Perceptron:
             for i in range(self.rows):
                 p = np.transpose(self.dataset[i])
                 t = self.target[i]
-                a = np.matmul(w, p)
+                a = np.matmul(w, p) + b
                 E = np.square(t - a)
                 e = t - a
                 print("w = {} + (2 * {} * {} * {})".format(w,alph,e,p))
-                w = w + (2 * alph * e * p)
+                w = w + (alph * e * p)
                 result.append(a)
+                b = b + (alph * e)
                 print("a = {}".format(a))
+                print("new a = {}".format(np.matmul(w,p) + b))
                 print("w = {}".format(w))
                 print("b = {}".format(b))
                 print("e = {}".format(e))
                 print("E = {}".format(E))
                 print("alph = {:2f}".format(alph))
                 input("continue? >> ")
+                mean.append(E)
             if epoch == 500:
                 break
             else:
                 epoch += 1
                 is_classified = []
                 result = []
+            print("Epoch = {}, Mean = {}".format(epoch, np.average(mean)))
+            mean = []
         input("continue epoch? >>")
         print("Perceptron Trained!")
         print("Final Weight = {}".format(w))
