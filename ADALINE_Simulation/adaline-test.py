@@ -101,9 +101,11 @@ class Perceptron:
       # pisahkan w
       w1 = w[0]
       w2 = w[1]
-      y = (-(b / w2) / (b / w1))x + (-b / w2)
       function = "y = {}x + {}".format((-(b/w2) / (b/w1)), b)
       return function
+
+    def generate_3d_linear_function(self,w,b):
+      
 
     def train_perceptron(self):
         epoch = 1
