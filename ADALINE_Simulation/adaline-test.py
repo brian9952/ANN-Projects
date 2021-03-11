@@ -48,7 +48,7 @@ class Perceptron:
         self.target = []
 
     def input_data(self):
-        cls()
+          cls()
         outer_arr = []
         for i in range(self.rows):
             inner_arr = []
@@ -96,6 +96,8 @@ class Perceptron:
             return 1
         else:
             return 0
+            
+            # test
 
     def train_perceptron(self):
         epoch = 1
