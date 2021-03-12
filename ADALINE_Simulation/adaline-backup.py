@@ -77,69 +77,80 @@ class Perceptron:
 
     def print_data(self):
         cls()
-        print("------| ADALINE's Data |------")
+        print("------| Perceptron's Data |------")
         perceptron_table = self.generate_table()
         print(perceptron_table)
         print("Weight = {}".format(self.w))
         print("Bias = {}".format(self.b))
 
-    def generate_2d_linear_function(self,w,b):
-        w1 = w[0]
-        w2 = w[1]
-        function = "y = {:.2f}x + {:.2f}".format((-(b/w2) / (b/w1)), (-b/w2))
-        return function
-    
-    def aftertraining_table(self, epoch_arr, w_arr, b_arr, error_arr, fx_arr):
+    def aftertraining_table(self, expectation, result):
         print("-----| Training Result |-----")
         table = PrettyTable()
-        table.add_column("Epoch", epoch_arr)
-        table.add_column("Weights", np.around(w_arr, decimals = 2))
-        table.add_column("Biases", np.around(b_arr, decimals = 2))
-        table.add_column("Error", np.around(error_arr, decimals = 2))
-        table.add_column("f(x)", fx_arr)
-        return table    
-    
+        table.add_column("Expectation", expectation)
+        table.add_column("Result", result)
+        return table
+        
+
+    def hardlim(self, n):
+        if n >= 0:
+            return 1
+        else:
+            return 0
+            
+    def generate_2d_linear_function(self,w,b):
+      # pisahkan w
+      w1 = w[0]
+      w2 = w[1]
+      function = "y = {}x + {}".format((-(b/w2) / (b/w1)), (-b/w2))
+      return function
+
     def train_perceptron(self):
-        # assign epoch's input, initial epoch, and variables
-        epoch = int(input("Input number of epoch >> "))
-        num_epoch = 0
+        epoch = 1
         w = self.w
         b = self.b
         alph = self.alph
-
-        # array variable for table creation
-        error_arr = []
-        epoch_arr = []
-        w_arr = []
-        b_arr = []
-        fx_arr = []
-
-        # looping from given epoch
-        for i in range(epoch):
-            num_epoch += 1
+        is_classified = []
+        mean = []
+        result = []
+        print(alph)
+        while True:
             print("Weight = {}".format(w))
             print("Bias = {}".format(b))
-            print("Epoch = {}".format(num_epoch))
-            for j in range(self.rows):
-                p = np.transpose(self.dataset[j])
-                t = self.target[j]
+            print("Epoch = {}".format(epoch))
+            for i in range(self.rows):
+                p = np.transpose(self.dataset[i])
+                t = self.target[i]
                 a = np.matmul(w, p) + b
                 E = np.square(t - a)
                 e = t - a
-                print("w = {} + {} * {} * {}".format(w,alph,e,p))
+                print("w = {} + (2 * {} * {} * {})".format(w,alph,e,p))
                 w = w + (alph * e * p)
+                result.append(a)
                 b = b + (alph * e)
-                function = self.generate_2d_linear_function(w,b)
-
-                # assign variables to array tables
-                epoch_arr.append(num_epoch)
-                w_arr.append(w)
-                b_arr.append(b)
-                error_arr.append(E)
-                fx_arr.append(function)
-
-        print("Adaline Trained!")
-        table = self.aftertraining_table(epoch_arr, w_arr, b_arr, error_arr, fx_arr)
+                print("a = {}".format(a))
+                print("new a = {}".format(np.matmul(w,p) + b))
+                print("w = {}".format(w))
+                print("b = {}".format(b))
+                print("e = {}".format(e))
+                print("E = {}".format(E))
+                print("alph = {:2f}".format(alph))
+                print(self.generate_2d_linear_function(w,b))
+                input("continue? >> ")
+                mean.append(E)
+            if epoch == 500:
+                break
+            else:
+                epoch += 1
+                is_classified = []
+                result = []
+            print("Epoch = {}, Mean = {}".format(epoch, np.average(mean)))
+            mean = []
+        input("continue epoch? >>")
+        print("Perceptron Trained!")
+        print("Final Weight = {}".format(w))
+        print("Final Bias = {}".format(b))
+        print("Final Epoch = {}".format(epoch))
+        table = self.aftertraining_table(result, self.target)
         print(table)
 
 # Main Program
@@ -151,4 +162,3 @@ if ans == 1:
     perceptron.print_data()
     input("Press enter to train perceptron... >> ")
     perceptron.train_perceptron()
-
