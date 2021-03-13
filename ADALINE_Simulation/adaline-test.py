@@ -124,11 +124,11 @@ class Perceptron:
                 p = np.transpose(self.dataset[j])
                 t = self.target[j]
                 a = np.matmul(w, p) + b
-                E = np.square(t - a)
+                E = np.square(t - a) / 2
                 e = t - a
                 print("w = {} + {} * {} * {}".format(w,alph,e,p))
-                w = w + (alph * e * p)
-                b = b + (alph * e)
+                w = w + (2 * alph * e * p)
+                b = b + (2 * alph * e)
                 function = self.generate_2d_linear_function(w,b)
 
                 # assign variables to array tables
