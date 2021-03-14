@@ -54,9 +54,9 @@ class Perceptron:
             inner_arr = []
             for j in range(self.layer["input"] + self.layer["output"]):
                 if j + 1 == self.layer["input"] + self.layer["output"]:
-                    num = int(input("Enter target for row {} >> ".format(i+1)))
+                    num = float(input("Enter target for row {} >> ".format(i+1)))
                 else:
-                    num = int(input("Enter value for row {} input {} >> ".format(i+1, j+1)))
+                    num = float(input("Enter value for row {} input {} >> ".format(i+1, j+1)))
                 inner_arr.append(num)
             outer_arr.append(inner_arr)
 
@@ -121,15 +121,15 @@ class Perceptron:
             print("Bias = {}".format(b))
             print("Epoch = {}".format(num_epoch))
             for j in range(self.rows):
+                function = self.generate_2d_linear_function(w,b)
                 p = np.transpose(self.dataset[j])
                 t = self.target[j]
-                a = np.matmul(w, p) + b
-                E = np.square(t - a) / 2
+                a = np.dot(w, p) + b
+                E = np.square(t - a)
                 e = t - a
-                print("w = {} + {} * {} * {}".format(w,alph,e,p))
+                print("Error : {}".format(e))
                 w = w + (2 * alph * e * p)
                 b = b + (2 * alph * e)
-                function = self.generate_2d_linear_function(w,b)
 
                 # assign variables to array tables
                 epoch_arr.append(num_epoch)
